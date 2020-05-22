@@ -4,21 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
+
+	"github.com/devlights/gomy/convert"
 )
 
-// Do は、指定された16進数文字列を10進数に変換します。
-func Do(v string) (int64, error) {
-	if len(v) == 0 {
-		return 0, nil
-	}
-
-	if strings.HasPrefix(v, "0x") {
-		v = strings.Replace(v, "0x", "", 1)
-	}
-
-	return strconv.ParseInt(v, 16, 32)
+// Convert -- 指定された文字列を16進数文字列とし10進数文字列へ変換します.
+func Convert(val string) (string, error) {
+	return convert.Hex2Dec(val, "", 0)
 }
 
 func main() {
@@ -31,12 +23,12 @@ func main() {
 	}
 
 	v := args[0]
-	i, err := Do(v)
+	i, err := Convert(v)
 	if err != nil {
 		fmt.Printf("[Error] %s\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("%s\t-->\t%d\n", v, i)
+	fmt.Printf("%s\t-->\t%s\n", v, i)
 	os.Exit(0)
 }
